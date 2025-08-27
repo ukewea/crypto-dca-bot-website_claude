@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { PositionsCurrent, Snapshot, TransactionLine, PriceLine } from '../types';
 import { fetchJSON, fetchNDJSON, fileExists, DataError } from './fileReaders';
 
 // Generic data fetching hook
 export function useDataFetch<T>(
   fetcher: () => Promise<T>,
-  dependencies: any[] = [],
+  dependencies: React.DependencyList = [],
   refreshInterval?: number
 ) {
   const [data, setData] = useState<T | null>(null);
@@ -24,7 +24,8 @@ export function useDataFetch<T>(
     } finally {
       setLoading(false);
     }
-  }, dependencies);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetcher, ...dependencies]);
 
   useEffect(() => {
     fetchData();
