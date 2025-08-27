@@ -3,7 +3,7 @@ import type { AppConfig } from '../types';
 // Get the data base path from config
 function getDataBasePath(): string {
   // Check for runtime config
-  const windowConfig = (window as any).__APP_CONFIG__ as AppConfig | undefined;
+  const windowConfig = (window as Record<string, unknown>).__APP_CONFIG__ as AppConfig | undefined;
   if (windowConfig?.dataBasePath) {
     return windowConfig.dataBasePath;
   }
@@ -14,7 +14,15 @@ function getDataBasePath(): string {
     return buildTimeConfig;
   }
   
-  // Default path
+  // For GitHub Pages, use the app's base path + /data
+  // import.meta.env.BASE_URL is set by Vite to the same base as the app
+  const basePath = import.meta.env.BASE_URL;
+  if (basePath && basePath !== '/') {
+    // Remove trailing slash from base path, add /data
+    return `${basePath.replace(/\/$/, '')}/data`;
+  }
+  
+  // Default path for local development
   return '/data';
 }
 
@@ -100,7 +108,7 @@ export async function fetchNDJSON<T>(
         
         // Apply time filtering if timestamps are available
         if (options.from || options.to) {
-          const item = parsed as any;
+          const item = parsed as Record<string, unknown>;
           if (item.ts) {
             const itemTime = new Date(item.ts).getTime();
             if (itemTime < fromTime || itemTime > toTime) {
