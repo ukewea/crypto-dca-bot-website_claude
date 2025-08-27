@@ -5,24 +5,32 @@ function getDataBasePath(): string {
   // Check for runtime config
   const windowConfig = (window as unknown as Record<string, unknown>).__APP_CONFIG__ as AppConfig | undefined;
   if (windowConfig?.dataBasePath) {
+    console.debug('Using runtime config data path:', windowConfig.dataBasePath);
     return windowConfig.dataBasePath;
   }
   
   // Check for build-time config
   const buildTimeConfig = import.meta.env.VITE_DATA_BASE_PATH;
   if (buildTimeConfig) {
+    console.debug('Using build-time config data path:', buildTimeConfig);
     return buildTimeConfig;
   }
   
   // For GitHub Pages, use the app's base path + /data
-  // import.meta.env.BASE_URL is set by Vite to the same base as the app
+  // import.meta.env.BASE_URL is set by Vite to match the app's base path
   const basePath = import.meta.env.BASE_URL;
-  if (basePath && basePath !== '/') {
+  console.debug('Vite BASE_URL:', basePath, 'PROD:', import.meta.env.PROD);
+  
+  // In production, always use the base path + data
+  if (import.meta.env.PROD) {
     // Remove trailing slash from base path, add /data
-    return `${basePath.replace(/\/$/, '')}/data`;
+    const dataPath = `${basePath.replace(/\/$/, '')}/data`;
+    console.debug('Using production data path:', dataPath);
+    return dataPath;
   }
   
   // Default path for local development
+  console.debug('Using default data path: /data');
   return '/data';
 }
 
