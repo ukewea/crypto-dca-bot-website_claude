@@ -1,5 +1,3 @@
-import type { AppConfig } from '../types';
-
 // Get the data base path from config
 function getDataBasePath(): string {
   // Hardwired path for GitHub Pages
