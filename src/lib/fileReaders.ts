@@ -3,7 +3,7 @@ import type { AppConfig } from '../types';
 // Get the data base path from config
 function getDataBasePath(): string {
   // Check for runtime config
-  const windowConfig = (window as Record<string, unknown>).__APP_CONFIG__ as AppConfig | undefined;
+  const windowConfig = (window as unknown as Record<string, unknown>).__APP_CONFIG__ as AppConfig | undefined;
   if (windowConfig?.dataBasePath) {
     return windowConfig.dataBasePath;
   }
@@ -109,7 +109,7 @@ export async function fetchNDJSON<T>(
         // Apply time filtering if timestamps are available
         if (options.from || options.to) {
           const item = parsed as Record<string, unknown>;
-          if (item.ts) {
+          if (typeof item.ts === 'string') {
             const itemTime = new Date(item.ts).getTime();
             if (itemTime < fromTime || itemTime > toTime) {
               continue;
