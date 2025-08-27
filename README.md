@@ -55,11 +55,11 @@ docker run -p 80:80 -v /path/to/data:/usr/share/nginx/html/data dca-bot-website
 git init
 git add .
 git commit -m "Initial commit"
-git remote add origin https://github.com/username/crypto-dca-bot-website.git
+git remote add origin https://github.com/ukewea/crypto-dca-bot-website_claude.git
 git push -u origin main
 
 # Enable GitHub Pages in repository settings
-# The site will be available at: https://username.github.io/crypto-dca-bot-website/
+# The site will be available at: https://ukewea.github.io/crypto-dca-bot-website_claude/
 ```
 
 ## Data Sources

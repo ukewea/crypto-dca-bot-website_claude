@@ -40,6 +40,7 @@ jobs:
       - name: Build website
         run: npm run build
         env:
+          NODE_ENV: production
           # Set base path for GitHub Pages (if repo is not <username>.github.io)
           VITE_DATA_BASE_PATH: '/data'
           
