@@ -25,7 +25,7 @@ export function useDataFetch<T>(
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetcher, ...dependencies]);
+  }, dependencies);
 
   useEffect(() => {
     fetchData();
